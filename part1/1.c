@@ -1,4 +1,4 @@
-// C program for the above approach
+//Bιβλιοθήκες που θα χρειαστώ
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,60 +16,38 @@ float NO3uM;
 float Salnty;
 float O2ml_L
 } data;
-// function to swap elements
+
+//Συνάρτηση που κάνει εναλλαγή (χρειάζεται στον Quick Sort)
 void swap(int *a, int *b) {
   int t = *a;
   *a = *b;
   *b = t;
 }
 
-// function to find the partition position
+//Υποσυνάρτηση του Quick Sort (Διαίρε)
 int partition(data array[], int low, int high) {
-
-  // select the rightmost element as pivot
   float pivot = array[high].T_degC;
-
-  // pointer for greater element
   int i = (low - 1);
 
-  // traverse each element of the array
-  // compare them with the pivot
   for (int j = low; j < high; j++) {
     if (array[j].T_degC <= pivot) {
-
-      // if element smaller than pivot is found
-      // swap it with the greater element pointed by i
       i++;
-
-      // swap element at i with element at j
       swap(&array[i].T_degC, &array[j].T_degC);
     }
   }
-
-  // swap the pivot element with the greater element at i
   swap(&array[i + 1].T_degC, &array[high].T_degC);
-
-  // return the partition point
   return (i + 1);
 }
 
 void quickSort(data array[], int low, int high) {
   if (low < high) {
-
-    // find the pivot element such that
-    // elements smaller than pivot are on left of pivot
-    // elements greater than pivot are on right of pivot
     int pi = partition(array, low, high);
-
-    // recursive call on the left of pivot
     quickSort(array, low, pi - 1);
-
-    // recursive call on the right of pivot
     quickSort(array, pi + 1, high);
   }
 }
 
-/* Πρόγραμμα ταξινομησης*/
+// Πρόγραμμα ταξινομησης insertion Sort
 void insertionSort(data arr[], int n)
 {
     int i,  j;
@@ -78,9 +56,6 @@ void insertionSort(data arr[], int n)
         key = arr[i].T_degC;
         j = i - 1;
 
-        /* Move elements of arr[0..i-1], that are
-          greater than key, to one position ahead
-          of their current position */
         while (j >= 0 && arr[j].T_degC > key) {
             arr[j + 1].T_degC = arr[j].T_degC;
             j = j - 1;
@@ -89,28 +64,23 @@ void insertionSort(data arr[], int n)
     }
 }
 
-// A utility function to print an array of size n
+//Συνάρτηση που εκτυπώνει τον πίνακα
 void printArray(data data[], int n)
 {
-
     for(int r=2; r<=n; r++)
     { printf("Date:%s  Temp:%f  PO4uM:%f  SiO3uM:%f  NO2uM:%f  NO3uM:%f  Salnty:%f  O2ml_L:%f\n", data[r].date, data[r].T_degC, data[r].PO4uM, data[r].SiO3uM, data[r].NO2uM, data[r].NO3uM, data[r].Salnty, data[r].O2ml_L);
 }
 }
 
-void openCSV(data data[]){// Substitute the full file path
-    // for the string file_path
+//Συνάρτηση που ανοίγει το csv και τα αποθηκεύει σε Stucts
+void openCSV(data data[]){
     FILE* fp = fopen("ocean.csv", "r");
 
     if (!fp)
         printf("Can't open file\n");
 
     else {
-
         char buffer[1024];
-
-
-
         int row = 0;
         int column = 0;
         int r=0;
@@ -119,29 +89,17 @@ void openCSV(data data[]){// Substitute the full file path
             column = 0;
             row++;
             r++;
-
-
-            // To avoid printing of column
-            // names in file can be changed
-            // according to need
             if (row == 1)
                 continue;
-
-            // Splitting the data
             char* value = strtok(buffer, ", ");
-
             while (value) {
-                // Column 1
+
                 if (column == 0) {
                     strcpy(data[r].date, value);
                 }
-
-                // Column 2
                 if (column == 1) {
                     data[r].T_degC = atof(value);
                 }
-
-                // Column 3
                 if (column == 2) {
                     data[r].PO4uM = atof(value);
                 }
@@ -169,7 +127,6 @@ void openCSV(data data[]){// Substitute the full file path
             printf("\n");
         }
 
-        // Close the file
         fclose(fp);
 }
 }
@@ -180,24 +137,55 @@ int main()
          openCSV(d);
         int n = sizeof(d) / sizeof(d[0]);
 
-        clock_t t;
-        t = clock();
+        printArray(d,n);
+        printf("Afta einai ta arxika stoixeia ta3inomimena me vasi tin imerominia\n\n");
+        printf("Patiste enter oste na ta3inomi8oun me vasi ton Insertion Sort.\n");
+        getchar();
+
+       clock_t start, end;
+        /* Recording the starting clock tick.*/
+        start = clock();
+         printf("Clock ticks at starting time: %ld\n", start);
         insertionSort(d, n);
-        t = clock() - t;
-        double time_taken = ((double)t)/CLOCKS_PER_SEC;
+         end = clock();
         printArray(d, n);
-        printf("Ta stoixeia ta3inomithikan me af3ousa seira 8ermokrasias me vasi ton Insertion Sort.\nTime nedded: %d second\n",time_taken);
+        printf("\nTa stoixeia ta3inomithikan me af3ousa seira 8ermokrasias me vasi ton Insertion Sort.\n");
+        printf("Clock ticks at end time: %ld\n", end);
+       printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
+       printf("The duration in seconds since the program was launched: %ld\n\n", (end-start)/CLOCKS_PER_SEC);
 
-        t = clock();
+    //Eγγραφή ταξινομιμένων στοιχείο σε νέο αρχείο
+    FILE *outfile;  //Δημιουργία αρχείου
+    outfile = fopen ("insertiondata.csv", "w");
+    if (outfile == NULL)
+    {
+        fprintf(stderr, "\nError opened file\n");
+        exit (1);
+    }
+    //Εγγραφή
+      fwrite (&d, sizeof(struct Data), n, outfile);
+      if(fwrite != 0)
+        printf("Ta ta3inomimena stoixeia graftikan se neo arxeio !\n");
+      else
+        printf("error writing file !\n");
+
+    fclose (outfile);
+
+       printf("Patiste enter oste na ta3inomi8oun me vasi ton Quick Sort.\n");
+       getchar();
+
+
+         start = clock();
+         printf("Clock ticks at starting time: %ld\n", start);
         quickSort(d, 0, n-1);
-        t = clock() - t;
-        time_taken = ((double)t)/CLOCKS_PER_SEC;
+        end = clock();
         printArray(d, n);
-        printf("Ta stoixeia ta3inomithikan me af3ousa seira 8ermokrasias me vasi ton Quick Sort.\nTime nedded: %d second\n",time_taken);
+        printf("\nTa stoixeia ta3inomithikan me af3ousa seira 8ermokrasias me vasi ton Quick Sort.\n");
+        printf("Clock ticks at end time: %ld\n", end);
+       printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
+       printf("The duration in seconds since the program was launched: %ld\n", (end-start)/CLOCKS_PER_SEC);
 
 
-//Na dw teleftaia seira kai clock
-
-
+//Na dw teleftai seira kai eggrafi se arxeio
     return 0;
 }
