@@ -90,6 +90,20 @@ void openCSV(data data[]){// Substitute the full file path
 }
 }
 
+ void createCSV(data data[],int s){
+     FILE *fpt;
+
+    fpt = fopen("MyFile.csv", "w+");
+    fprintf(fpt,"Date,      PO4Um\n");
+    for (int i=2; i<s; i++)
+    {
+        
+        fprintf(fpt,"%s, %f\n",data[i].date,data[i].PO4uM );
+    }
+
+    fclose(fpt);
+ }
+
 // Function to swap the the position of two elements
   void swap(int *a, int *b) {
     int temp = *a;
@@ -97,11 +111,7 @@ void openCSV(data data[]){// Substitute the full file path
     *b = temp;
   }
 
-  /* void swa(char *a, char *b) {
-    char temp = *a;
-    *a = *b;
-    *b = temp;
-  }*/
+
   void swa(char *str1, char *str2)
 {
   char *temp = (char *)malloc((strlen(str1) + 1) * sizeof(char));
@@ -143,16 +153,25 @@ void openCSV(data data[]){// Substitute the full file path
       swap(&arr[0].PO4uM, &arr[i].PO4uM);
       swa(arr[0].date, arr[i].date);
 
+
       heapify(arr, i, 0);
     }
   }
 
   // Print an array
   void printArray(data arr[], int s) {
-    for (int i = 2; i < s; i++)
+      data arr2[1046];
+       data arr3[1046];
+    for (int i = 2; i < s; i++){
       printf("Date:%s  PO4uM:%f  \n", arr[i].date,arr[i].PO4uM);
 
+    
+      }
+
   }
+
+
+
 
 /*void countingSort(data array[], float s) {
   int output[1046];
@@ -203,6 +222,7 @@ void openCSV(data data[]){// Substitute the full file path
 
   int main() {
        data d[1406];
+data a[1406];
          openCSV(d);
         int s = sizeof(d) / sizeof(d[0]);
 
@@ -211,24 +231,29 @@ void openCSV(data data[]){// Substitute the full file path
         /* Recording the starting clock tick.*/
         start = clock();
 
-         printf("Clock ticks at starting time: %ld\n", start);
+        printf("Clock ticks at starting time: %ld\n", start);
 
+        //call the heap sort function
         heapSort(d, s);
 
-      end = clock();
+        end = clock();
 
-    printf("the elements were sorted using heapsort \n");
-    printArray(d , s);
+        printf("the elements were sorted using heapsort \n");
+        printArray(d , s);
 
-   printf("Clock ticks at end time: %ld\n", end);
+        printf("Clock ticks at end time: %ld\n", end);
 
 
   printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
   printf("The duration in seconds since the program was launched: %ld\n", (end-start)/CLOCKS_PER_SEC);
+
+   createCSV(d,s);
     /*countingSort(d, s);
 
     printf("the elements were sorted using counting sort \n");
     printArray(d , s);*/
 
+
+  
     return 0;
   }
