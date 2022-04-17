@@ -24,6 +24,15 @@ void swap(int *a, int *b) {
   *b = t;
 }
 
+void swap2(char *str1, char *str2)
+{
+  char *temp = (char *)malloc((strlen(str1) + 1) * sizeof(char));
+  strcpy(temp, str1);
+  strcpy(str1, str2);
+  strcpy(str2, temp);
+  free(temp);
+}
+
 //Υποσυνάρτηση του Quick Sort (Διαίρε)
 int partition(data array[], int low, int high) {
   float pivot = array[high].T_degC;
@@ -32,10 +41,12 @@ int partition(data array[], int low, int high) {
   for (int j = low; j < high; j++) {
     if (array[j].T_degC <= pivot) {
       i++;
-      swap(&array[i].T_degC, &array[j].T_degC);
+     swap(&array[i].T_degC, &array[j].T_degC);
+     swap2(array[i].date, array[j].date);
     }
   }
   swap(&array[i + 1].T_degC, &array[high].T_degC);
+  swap2(array[i + 1].date, array[high].date);
   return (i + 1);
 }
 
@@ -52,12 +63,13 @@ void insertionSort(data arr[], int n)
 {
     int i,  j;
     float key;
-    for (i = 1; i < n; i++) {
+    for (i = 1; i <= n; i++) {
         key = arr[i].T_degC;
         j = i - 1;
 
         while (j >= 0 && arr[j].T_degC > key) {
             arr[j + 1].T_degC = arr[j].T_degC;
+            swap2(arr[j + 1].date , arr[j].date);
             j = j - 1;
         }
         arr[j + 1].T_degC = key;
@@ -71,6 +83,21 @@ void printArray(data data[], int n)
     { printf("Date:%s  Temp:%f  PO4uM:%f  SiO3uM:%f  NO2uM:%f  NO3uM:%f  Salnty:%f  O2ml_L:%f\n", data[r].date, data[r].T_degC, data[r].PO4uM, data[r].SiO3uM, data[r].NO2uM, data[r].NO3uM, data[r].Salnty, data[r].O2ml_L);
 }
 }
+
+//Συνάρτηση γγια δημιουργεία αρχειου csv
+ void createCSV(data data[],int s){
+     FILE *fpt;
+
+    fpt = fopen("MyFile.csv", "w+");
+    fprintf(fpt,"Date,Temp\n");
+    for (int i=2; i<s; i++)
+    {
+
+        fprintf(fpt,"%s, %f\n",data[i].date,data[i].T_degC );
+    }
+
+    fclose(fpt);
+ }
 
 //Συνάρτηση που ανοίγει το csv και τα αποθηκεύει σε Stucts
 void openCSV(data data[]){
@@ -130,8 +157,8 @@ void openCSV(data data[]){
         fclose(fp);
 }
 }
-int main()
 
+int main()
 {
         data d[1406];
          openCSV(d);
@@ -155,7 +182,7 @@ int main()
        printf("The duration in seconds since the program was launched: %ld\n\n", (end-start)/CLOCKS_PER_SEC);
 
     //Eγγραφή ταξινομιμένων στοιχείο σε νέο αρχείο
-    FILE *outfile;  //Δημιουργία αρχείου
+   /* FILE *outfile;  //Δημιουργία αρχείου
     outfile = fopen ("insertiondata.csv", "w");
     if (outfile == NULL)
     {
@@ -169,7 +196,7 @@ int main()
       else
         printf("error writing file !\n");
 
-    fclose (outfile);
+    fclose (outfile); */
 
        printf("Patiste enter oste na ta3inomi8oun me vasi ton Quick Sort.\n");
        getchar();
