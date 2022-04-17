@@ -1,16 +1,16 @@
 #include <stdio.h>
 
 //creat a struct in order to store csv's data
-typedef struct ocean{
-    char Date[100];
-    char T_degC[100];
-    char PO4uM[100];
-    char SiO3uM[100];
-    char NO2uM[100];
-    char NO3uM[100];
-    char Salnty[100];
-    char O2ml_L[100];
-} dict;
+typedef struct ocean {
+char date[10];
+float T_degC;
+float PO4uM;
+float SiO3uM;
+float NO2uM;
+float NO3uM;
+float Salnty;
+float O2ml_L
+} data;
 
 int read_csv(){     //function to read csv file
     FILE *file = fopen("ocean.csv", "r");   //open csv in read mode
