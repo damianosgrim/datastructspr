@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 //creat a struct in order to store csv's data
 typedef struct ocean {
