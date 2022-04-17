@@ -93,26 +93,26 @@ void openCSV(data data[]){// Substitute the full file path
  void createCSV(data data[],int s){
      FILE *fpt;
 
-    fpt = fopen("MyFile.csv", "w+");
+    fpt = fopen("outputHeapsort.csv", "w+");
     fprintf(fpt,"Date,      PO4Um\n");
     for (int i=2; i<s; i++)
     {
-        
+
         fprintf(fpt,"%s, %f\n",data[i].date,data[i].PO4uM );
     }
 
     fclose(fpt);
  }
 
-// Function to swap the the position of two elements
+// function to swap integers
   void swap(int *a, int *b) {
     int temp = *a;
     *a = *b;
     *b = temp;
   }
 
-
-  void swa(char *str1, char *str2)
+//function to swap strings
+  void swap2(char *str1, char *str2)
 {
   char *temp = (char *)malloc((strlen(str1) + 1) * sizeof(char));
   strcpy(temp, str1);
@@ -122,7 +122,7 @@ void openCSV(data data[]){// Substitute the full file path
 }
 
 
-  void heapify(data arr[], int s, int i) {
+  void heapify(data arr[], int s, int i) {  //s=size
     // Finds what is the smallest the root, the left child or the right child
     int smallest = i;
     int l = 2 * i + 1; //left child
@@ -137,38 +137,33 @@ void openCSV(data data[]){// Substitute the full file path
     //if the root is not the smallest swap and heapify
     if (smallest != i) {
       swap(&arr[i].PO4uM, &arr[smallest].PO4uM);
-      swa(arr[i].date, arr[smallest].date);
+      swap2(arr[i].date, arr[smallest].date);
       heapify(arr, s, smallest);
     }
   }
 
-
+//function for heapsort
   void heapSort(data arr[], int s) {
 
     for (int i = s / 2 - 1; i >= 0; i--)
       heapify(arr, s, i);
 
-    // Heap sort
     for (int i = s - 1; i >= 0; i--) {
       swap(&arr[0].PO4uM, &arr[i].PO4uM);
-      swa(arr[0].date, arr[i].date);
-
+      swap2(arr[0].date, arr[i].date);
 
       heapify(arr, i, 0);
     }
   }
 
-  // Print an array
+
+  //function to print the array
   void printArray(data arr[], int s) {
-      data arr2[1046];
-       data arr3[1046];
+
     for (int i = 2; i < s; i++){
       printf("Date:%s  PO4uM:%f  \n", arr[i].date,arr[i].PO4uM);
-
-    
       }
-
-  }
+}
 
 
 
@@ -221,9 +216,10 @@ void openCSV(data data[]){// Substitute the full file path
 }*/
 
   int main() {
-       data d[1406];
-data a[1406];
-         openCSV(d);
+
+        data d[1406];
+
+        openCSV(d);
         int s = sizeof(d) / sizeof(d[0]);
 
        clock_t start, end;
@@ -241,7 +237,7 @@ data a[1406];
         printf("the elements were sorted using heapsort \n");
         printArray(d , s);
 
-        printf("Clock ticks at end time: %ld\n", end);
+        printf("\nClock ticks at end time: %ld\n", end);
 
 
   printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
@@ -254,6 +250,6 @@ data a[1406];
     printArray(d , s);*/
 
 
-  
+
     return 0;
   }
