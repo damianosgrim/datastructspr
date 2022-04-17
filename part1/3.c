@@ -12,27 +12,70 @@ float Salnty;
 float O2ml_L
 } data;
 
-int read_csv(){     //function to read csv file
-    FILE *file = fopen("ocean.csv", "r");   //open csv in read mode
-   
-        if (file == NULL){          //csv not found
-            printf("Error! File not found!");
-            exit(1);
+void openCSV(data data[]){
+    // Substitute the full file path
+    // for the string file_path
+        FILE* fp = fopen("ocean.csv", "r");
+    
+    if (!fp)
+        printf("Can't open file\n");
+
+    else{
+        char buffer[1024];
+
+        int row = 0;
+        int column = 0;
+        int r = 0;
+
+            while (fgets(buffer,1024, fp)) {
+                column = 0;
+                row++;
+                r++;
+
+
+                // To avoid printing of column
+                // names in file can be changed
+                // according to need
+                if (row == 1)
+                    continue;
+
+                // Splitting the data
+                char* value = strtok(buffer, ", ");
+
+                while (value) {
+                    // Column 1
+                    if (column == 0) {
+                        strcpy(data[r].date, value);
+                    }
+
+                    // Column 2
+                    if (column == 1) {data[r].T_degC = atof(value);}
+
+                // Column 3
+                if (column == 2) {data[r].PO4uM = atof(value);}
+                    
+                if (column == 3) {data[r].SiO3uM = atof(value);}
+           
+                if (column == 4) {data[r].NO2uM = atof(value);}
+                    
+                if (column == 5) {data[r].NO3uM = atof(value);}
+                    
+                if (column == 6) {data[r].Salnty = atof(value);}
+                  
+                if (column == 7) {data[r].O2ml_L = atof(value);}
+                
+                value = strtok(NULL, ", ");
+                column++;
+            }
+
+            printf("\n");
         }
 
-     //csv found
-    char line[1500]; //stores 1500 lines into line 
-        int row=0;
-        int field=0;
-    dict values[1500]; //array to save values of the struct
-
-    int i=0;
-    while (fgets(line, 1500, file))
-    {
-        /* code */
+        // Close the file
+        fclose(fp);
     }
-    
 }
+
 
 int binarySearch(int array[], int Left, int Right, int W){
 
@@ -54,6 +97,7 @@ int binarySearch(int array[], int Left, int Right, int W){
     return -1; //the array has only one element, nothing to search
     
 }
+
 
 int interpolationSearch(int array[], int n, int W){     //array of sorted data, n=number, W=value we want
     if(n==0)
@@ -84,6 +128,7 @@ int interpolationSearch(int array[], int n, int W){     //array of sorted data, 
     //value doesn't exist 
     else {return -1;}
 }
+
 
 int main() {
 
