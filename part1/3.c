@@ -78,7 +78,7 @@ void openCSV(data data[]){
 }
 
 
-int binarySearch(int array[], int Left, int Right, int W){
+int binarySearch(data array[], int Left, int Right, string W){
 
     if(Right>=1){
         
@@ -100,7 +100,7 @@ int binarySearch(int array[], int Left, int Right, int W){
 }
 
 
-int interpolationSearch(int array[], int n, int W){     //array of sorted data, n=number, W=value we want
+int interpolationSearch(data array[], int n, string W){     //array of sorted data, n=number, W=value we want
     if(n==0)
         { printf("Error! No data found");
           exit(1)}
@@ -133,22 +133,78 @@ int interpolationSearch(int array[], int n, int W){     //array of sorted data, 
 
 int main() {
 
-  read_csv(); //call the function to read the csv file
+  openCSV(array); //call the function that read the csv file
 
-  //ask from the user to enter the value he want 
-  printf("Enter the value W you want to find, using binary and interpolation search:");
-  scanf("%d",&W);  
+  data array[1500]; 
+
+    int s=sizeof(array)/sizeof(array[0]); //used to find right limit, binary search
+    int n=sizeof(array); 
+
+    int date; //date
+    int h; //variable to save user's choice
   
-  //binary
-  int result_b = binarySearch(array, ); //result of binary search
-  if(result_b == -1){printf("Element isn't found with binary search\n");}
-  if(result_b != -1){printf("Element found at index:\n %d \n using binary search \n",result);}
+  printf("Enter the date:\n"); //ask for a date
+  scanf("%d",&date);  
 
-  //interpolation
-  int n=sizeof(array)/sizeof(array[0]);
-  int result_p = interpolationSearch(array, n, W); //result of interpolation search
-  if(result_p == -1){printf("Element isn't found with interpolation search\n");}
-  if(result_p != -1){printf("Element found at index:\n %d \n using interpolation search \n",result);}
+  printf("Select what do you want to search for:\n"); //ask for temp, phosp or both
+  printf(" Type t for Temperature \n Type p for Phosphate \n Type b for both Temperature and Phosphate \n ");
+  scanf("%d", &h);
+    
+    switch(h) //cases for every choice 
+    {
+        case 't': //only temperature
+            
+            //binary search for temp
+            int result_temp_bin = binarySearch(array, 0 , s-1, date)
+            if (result_temp_bin != -1) {printf("Temperature found with binary search: %f \n" array[result_temp_bin].T_degC);}
+            if (result_temp_bin == -1) {printf("No data found\n");}
+
+            //interpolation search for temp
+            int result_temp_inter = interpolationSearch(array, n, date);
+            if (result_temp_inter != -1) {printf("Temperature found with interpolation search: %f \n" array[result_temp_inter].T_degC);}
+            if (result_temp_inter == -1) {printf("No data found\n");}
+
+            break;
+
+        case 'p': //only phosphate
+
+            //binary search for temp
+            int result_phosp_bin = binarySearch(array, 0 , s-1, date)
+            if (result_phosp_bin != -1) {printf("The value of the phosphate found with binary search: %f \n" array[result_phosp_bin].PO4uM);}
+            if (result_phosp_bin == -1) {printf("No data found\n");}
+
+            //interpolation search for temp
+            int result_phosp_inter = interpolationSearch(array, n, date);
+            if (result_phosp_inter != -1) {printf("The value of the phosphate found with interpolation search: %f \n" array[result_phosp_inter].PO4uM);}
+            if (result_phosp_inter == -1) {printf("No data found\n");}
+
+            break;
+
+        case 'b': //both temperature and phosphate
+
+            //binary search for both
+            int result_b_bin = binarySearch(array, 0 , s-1, date)
+            if (result_b_bin != -1) {printf("The value of the phosphate found with binary search: %f " array[result_b_bin].PO4uM, "and the temperature was: %f \n" array[result_b_bin].T_degC);}
+            if (result_b_bin == -1) {printf("No data found\n");}
+
+             //interpolation search for temp
+            int result_b_inter = interpolationSearch(array, n, date);
+            if (result_b_inter != -1) {printf("The value of the phosphate found with binary search: %f " array[result_b_inter].PO4uM, "and the temperature was: %f \n" array[result_b_inter].T_degC);}
+            if (result_b_inter == -1) {printf("No data found\n");}
+
+            break;
+
+        //doesn't match any case 
+        default:
+            printf("Error! This is not a choice!\n");//In case user type wrong letter
+    }
+
+    /*char cont_prog = 'n';
+            do {
+                /* main program in here */
+                printf("Do you want to start again? (y/n): ");
+                cont_prog = getchar();
+            } while (cont_prog == 'y' || cont_prog == 'Y'); */
 
   return 0;
 }
