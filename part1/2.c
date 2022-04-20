@@ -11,11 +11,10 @@ float SiO3uM;
 float NO2uM;
 float NO3uM;
 float Salnty;
-float O2ml_L
+float O2ml_L;
 } data;
 
-void openCSV(data data[]){// Substitute the full file path
-    // for the string file_path
+void openCSV(data data[]){
     FILE* fp = fopen("ocean.csv", "r");
 
     if (!fp)
@@ -37,27 +36,24 @@ void openCSV(data data[]){// Substitute the full file path
             r++;
 
 
-            // To avoid printing of column
-            // names in file can be changed
-            // according to need
+
             if (row == 1)
                 continue;
 
-            // Splitting the data
+
             char* value = strtok(buffer, ", ");
 
             while (value) {
-                // Column 1
+
                 if (column == 0) {
                     strcpy(data[r].date, value);
                 }
 
-                // Column 2
+
                 if (column == 1) {
                     data[r].T_degC = atof(value);
                 }
 
-                // Column 3
                 if (column == 2) {
                     data[r].PO4uM = atof(value);
                 }
@@ -94,11 +90,11 @@ void openCSV(data data[]){// Substitute the full file path
      FILE *fpt;
 
     fpt = fopen("outputHeapsort.csv", "w+");
-    fprintf(fpt,"Date,      PO4Um\n");
+    fprintf(fpt,"Date,       PO4Um,       T_degC,      SiO3uM,      NO2uM,      NO3uM,      Salnty,       O2ml_L\n");
     for (int i=2; i<s; i++)
     {
 
-        fprintf(fpt,"%s, %f\n",data[i].date,data[i].PO4uM );
+        fprintf(fpt,"%s,  %f,   %f,   %f,   %f,   %f,   %f,   %f\n",data[i].date,data[i].PO4uM, data[i].T_degC,data[i].SiO3uM,data[i].NO2uM, data[i].NO3uM,data[i].Salnty, data[i].O2ml_L);
     }
 
     fclose(fpt);
@@ -136,8 +132,15 @@ void openCSV(data data[]){// Substitute the full file path
 
     //if the root is not the smallest swap and heapify
     if (smallest != i) {
-      swap(&arr[i].PO4uM, &arr[smallest].PO4uM);
-      swap2(arr[i].date, arr[smallest].date);
+            swap(&arr[i].PO4uM, &arr[smallest].PO4uM);
+            swap2(arr[i].date, arr[smallest].date);
+            swap(&arr[i].T_degC, &arr[smallest].T_degC);
+            swap(&arr[i].SiO3uM, &arr[smallest].SiO3uM);
+            swap(&arr[i].NO2uM, &arr[smallest].NO2uM);
+            swap(&arr[i].NO3uM, &arr[smallest].NO3uM);
+            swap(&arr[i].Salnty, &arr[smallest].Salnty);
+            swap(&arr[i].O2ml_L, &arr[smallest].O2ml_L);
+
       heapify(arr, s, smallest);
     }
   }
@@ -158,17 +161,17 @@ void openCSV(data data[]){// Substitute the full file path
 
 
   //function to print the array
-  void printArray(data arr[], int s) {
-
-    for (int i = 2; i < s; i++){
-      printf("Date:%s  PO4uM:%f  \n", arr[i].date,arr[i].PO4uM);
-      }
+  void printArray(data data[], int s)
+{
+    for(int i=2; i<s; i++)
+    { printf("Date:%s  PO4uM:%f  Temp:%f  SiO3uM:%f  NO2uM:%f  NO3uM:%f  Salnty:%f  O2ml_L:%f\n", data[i].date, data[i].PO4uM, data[i].T_degC, data[i].SiO3uM, data[i].NO2uM, data[i].NO3uM, data[i].Salnty, data[i].O2ml_L);
+}
 }
 
+/*
 
 
-
-/*void countingSort(data array[], float s) {
+void countingSort(data array[], int s) {
   int output[1046];
 
   // Find the largest element of the array
@@ -183,7 +186,7 @@ void openCSV(data data[]){// Substitute the full file path
   // we cannot declare it as int count(max+1) in C as
   // it does not support dynamic memory allocation.
   // So, its size is provided statically.
-  int count[4];
+  int count[5];
 
   // Initialize count array with all zeros.
   for (int i = 0; i <= max; ++i) {
@@ -211,20 +214,21 @@ void openCSV(data data[]){// Substitute the full file path
 
   // Copy the sorted elements into original array
   for (int i = 0; i < s; i++) {
-    array[i].PO4uM = output[i];
+         int arr=(int) array[i].PO4uM;
+    arr = output[i];
   }
 }*/
 
   int main() {
 
         data d[1406];
-
+        char ocean;
         openCSV(d);
         int s = sizeof(d) / sizeof(d[0]);
 
        clock_t start, end;
 
-        /* Recording the starting clock tick.*/
+        // Recording the starting clock tick.
         start = clock();
 
         printf("Clock ticks at starting time: %ld\n", start);
@@ -244,7 +248,8 @@ void openCSV(data data[]){// Substitute the full file path
   printf("The duration in seconds since the program was launched: %ld\n", (end-start)/CLOCKS_PER_SEC);
 
    createCSV(d,s);
-    /*countingSort(d, s);
+
+   /* countingSort(d, s);
 
     printf("the elements were sorted using counting sort \n");
     printArray(d , s);*/
