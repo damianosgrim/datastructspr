@@ -14,10 +14,10 @@ float SiO3uM;
 float NO2uM;
 float NO3uM;
 float Salnty;
-float O2ml_L
+float O2ml_L;
 } data;
 
-//Συνάρτηση που κάνει εναλλαγή (χρειάζεται στον Quick Sort)
+//Συνάρτηση που κάνει εναλλαγή (χρειαζεται στον Quick Sort)
 void swap(int *a, int *b) {
   int t = *a;
   *a = *b;
@@ -42,10 +42,22 @@ int partition(data array[], int low, int high) {
     if (array[j].T_degC <= pivot) {
       i++;
      swap(&array[i].T_degC, &array[j].T_degC);
+     swap(&array[i].PO4uM, &array[j].PO4uM);
+     swap(&array[i].SiO3uM, &array[j].SiO3uM);
+     swap(&array[i].NO2uM, &array[j].NO2uM);
+     swap(&array[i].NO3uM, &array[j].NO3uM);
+     swap(&array[i].Salnty, &array[j].Salnty);
+     swap(&array[i].O2ml_L, &array[j].O2ml_L);
      swap2(array[i].date, array[j].date);
     }
   }
   swap(&array[i + 1].T_degC, &array[high].T_degC);
+  swap(&array[i+1].PO4uM, &array[high].PO4uM);
+  swap(&array[i+1].SiO3uM, &array[high].SiO3uM);
+  swap(&array[i+1].NO2uM, &array[high].NO2uM);
+  swap(&array[i+1].NO3uM, &array[high].NO3uM);
+  swap(&array[i+1].Salnty, &array[high].Salnty);
+  swap(&array[i+1].O2ml_L, &array[high].O2ml_L);
   swap2(array[i + 1].date, array[high].date);
   return (i + 1);
 }
@@ -63,13 +75,19 @@ void insertionSort(data arr[], int n)
 {
     int i,  j;
     float key;
-    for (i = 1; i <= n; i++) {
+    for (i = 1; i < n; i++) {
         key = arr[i].T_degC;
         j = i - 1;
 
         while (j >= 0 && arr[j].T_degC > key) {
             arr[j + 1].T_degC = arr[j].T_degC;
-            swap2(arr[j + 1].date , arr[j].date);
+            arr[j + 1].PO4uM = arr[j].PO4uM;
+            arr[j + 1].SiO3uM = arr[j].SiO3uM;
+            arr[j + 1].NO2uM = arr[j].NO2uM;
+            arr[j + 1].NO3uM = arr[j].NO3uM;
+            arr[j + 1].Salnty = arr[j].Salnty;
+            arr[j + 1].O2ml_L = arr[j].O2ml_L;
+            swap2(arr[j + 1].date, arr[j].date);
             j = j - 1;
         }
         arr[j + 1].T_degC = key;
@@ -79,16 +97,16 @@ void insertionSort(data arr[], int n)
 //Συνάρτηση που εκτυπώνει τον πίνακα
 void printArray(data data[], int n)
 {
-    for(int r=2; r<=n; r++)
-    { printf("Date:%s  Temp:%f  PO4uM:%f  SiO3uM:%f  NO2uM:%f  NO3uM:%f  Salnty:%f  O2ml_L:%f\n", data[r].date, data[r].T_degC, data[r].PO4uM, data[r].SiO3uM, data[r].NO2uM, data[r].NO3uM, data[r].Salnty, data[r].O2ml_L);
+    for(int r=2; r<n; r++)
+    { printf("Date:%s  Temp:%.2f  PO4uM:%.2f  SiO3uM:%.2f  NO2uM:%.2f  NO3uM:%.2f  Salnty:%.3f  O2ml_L:%.2f\n", data[r].date, data[r].T_degC, data[r].PO4uM, data[r].SiO3uM, data[r].NO2uM, data[r].NO3uM, data[r].Salnty, data[r].O2ml_L);
 }
 }
 
-//Συνάρτηση γγια δημιουργεία αρχειου csv
+//Συνάρτηση για δημιουργεία αρχειου csv
  void createCSV(data data[],int s){
      FILE *fpt;
 
-    fpt = fopen("MyFile.csv", "w+");
+    fpt = fopen("ordereddata.csv", "w+");
     fprintf(fpt,"Date,Temp\n");
     for (int i=2; i<s; i++)
     {
@@ -166,11 +184,27 @@ int main()
 
         printArray(d,n);
         printf("Afta einai ta arxika stoixeia ta3inomimena me vasi tin imerominia\n\n");
-        printf("Patiste enter oste na ta3inomi8oun me vasi ton Insertion Sort.\n");
-        getchar();
 
-       clock_t start, end;
-        /* Recording the starting clock tick.*/
+     printf("Patiste enter oste na ta3inomi8oun me vasi ton Quick Sort.\n");
+       getchar();
+        clock_t start, end;
+       // Recording the starting clock tick
+         start = clock();
+         printf("Clock ticks at starting time: %ld\n", start);
+        quickSort(d, 0, n-1);
+        end = clock();
+        printArray(d, n);
+        printf("\nTa stoixeia ta3inomithikan me af3ousa seira 8ermokrasias me vasi ton Quick Sort.\n");
+        printf("Clock ticks at end time: %ld\n", end);
+       printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
+       printf("The duration in seconds since the program was launched: %ld\n\n", (end-start)/CLOCKS_PER_SEC);
+
+
+      createCSV(d,n);
+      printf("Ta ta3inomimena stoixeia apo8ikeftikan se neo arxeio me onoma: ordereddata.csv\n\n");
+
+       printf("Patiste enter oste na ta3inomi8oun me vasi ton Insertion Sort.\n");
+        getchar();
         start = clock();
          printf("Clock ticks at starting time: %ld\n", start);
         insertionSort(d, n);
@@ -181,38 +215,8 @@ int main()
        printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
        printf("The duration in seconds since the program was launched: %ld\n\n", (end-start)/CLOCKS_PER_SEC);
 
-    //Eγγραφή ταξινομιμένων στοιχείο σε νέο αρχείο
-   /* FILE *outfile;  //Δημιουργία αρχείου
-    outfile = fopen ("insertiondata.csv", "w");
-    if (outfile == NULL)
-    {
-        fprintf(stderr, "\nError opened file\n");
-        exit (1);
-    }
-    //Εγγραφή
-      fwrite (&d, sizeof(struct Data), n, outfile);
-      if(fwrite != 0)
-        printf("Ta ta3inomimena stoixeia graftikan se neo arxeio !\n");
-      else
-        printf("error writing file !\n");
-
-    fclose (outfile); */
-
-       printf("Patiste enter oste na ta3inomi8oun me vasi ton Quick Sort.\n");
-       getchar();
 
 
-         start = clock();
-         printf("Clock ticks at starting time: %ld\n", start);
-        quickSort(d, 0, n-1);
-        end = clock();
-        printArray(d, n);
-        printf("\nTa stoixeia ta3inomithikan me af3ousa seira 8ermokrasias me vasi ton Quick Sort.\n");
-        printf("Clock ticks at end time: %ld\n", end);
-       printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
-       printf("The duration in seconds since the program was launched: %ld\n", (end-start)/CLOCKS_PER_SEC);
 
-
-//Na dw teleftai seira kai eggrafi se arxeio
     return 0;
 }
