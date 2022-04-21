@@ -206,6 +206,7 @@ void createCSV2(data data[],int s){
     fclose(fpt);
  }
 
+//this is the function to create the output file for counting sort
  void createCSV3(data2 data[],int s){
      FILE *fpt;
 
