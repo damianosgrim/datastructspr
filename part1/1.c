@@ -197,7 +197,7 @@ int main()
         printf("\nTa stoixeia ta3inomithikan me af3ousa seira 8ermokrasias me vasi ton Quick Sort.\n");
         printf("Clock ticks at end time: %ld\n", end);
        printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
-       printf("The duration in seconds since the program was launched: %ld\n\n", (end-start)/CLOCKS_PER_SEC);
+       printf("The duration in seconds since the program was launched: %fl\n\n", (double)(end-start)/CLOCKS_PER_SEC);
 
 
       createCSV(d,n);
@@ -213,7 +213,7 @@ int main()
         printf("\nTa stoixeia ta3inomithikan me af3ousa seira 8ermokrasias me vasi ton Insertion Sort.\n");
         printf("Clock ticks at end time: %ld\n", end);
        printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
-       printf("The duration in seconds since the program was launched: %ld\n\n", (end-start)/CLOCKS_PER_SEC);
+       printf("The duration in seconds since the program was launched: %fl\n\n", (double)(end-start)/CLOCKS_PER_SEC);
 
 
 
