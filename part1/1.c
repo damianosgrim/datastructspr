@@ -81,12 +81,12 @@ void insertionSort(data arr[], int n)
 
         while (j >= 0 && arr[j].T_degC > key) {
             arr[j + 1].T_degC = arr[j].T_degC;
-            arr[j + 1].PO4uM = arr[j].PO4uM;
-            arr[j + 1].SiO3uM = arr[j].SiO3uM;
-            arr[j + 1].NO2uM = arr[j].NO2uM;
-            arr[j + 1].NO3uM = arr[j].NO3uM;
-            arr[j + 1].Salnty = arr[j].Salnty;
-            arr[j + 1].O2ml_L = arr[j].O2ml_L;
+            swap(&arr[j + 1].PO4uM, &arr[j].PO4uM);
+            swap(&arr[j + 1].SiO3uM, &arr[j].SiO3uM);
+            swap(&arr[j + 1].NO2uM, &arr[j].NO2uM);
+            swap(&arr[j + 1].NO3uM, &arr[j].NO3uM);
+            swap(&arr[j + 1].Salnty, &arr[j].Salnty);
+            swap(&arr[j + 1].O2ml_L, &arr[j].O2ml_L);
             swap2(arr[j + 1].date, arr[j].date);
             j = j - 1;
         }
@@ -178,11 +178,14 @@ void openCSV(data data[]){
 
 int main()
 {
-        data d[1406];
-         openCSV(d);
-        int n = sizeof(d) / sizeof(d[0]);
+        data d1[1406];
+        data d2[1406]; //Ξεχοριστά stracts ώστε να γίνει η ταξινόμιση για τους 2 αλγορίθμους από την αρχή
+         openCSV(d1);
+         openCSV(d2);
+        int n1 = sizeof(d1) / sizeof(d2[0]);
+        int n2 = sizeof(d1) / sizeof(d2[0]);
 
-        printArray(d,n);
+        printArray(d1,n1);
         printf("Afta einai ta arxika stoixeia ta3inomimena me vasi tin imerominia\n\n");
 
      printf("Patiste enter oste na ta3inomi8oun me vasi ton Quick Sort.\n");
@@ -191,25 +194,25 @@ int main()
        // Recording the starting clock tick
          start = clock();
          printf("Clock ticks at starting time: %ld\n", start);
-        quickSort(d, 0, n-1);
+        quickSort(d1, 0, n1-1);
         end = clock();
-        printArray(d, n);
+        printArray(d1, n1);
         printf("\nTa stoixeia ta3inomithikan me af3ousa seira 8ermokrasias me vasi ton Quick Sort.\n");
         printf("Clock ticks at end time: %ld\n", end);
        printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
        printf("The duration in seconds since the program was launched: %fl\n\n", (double)(end-start)/CLOCKS_PER_SEC);
 
 
-      createCSV(d,n);
+      createCSV(d1,n1);
       printf("Ta ta3inomimena stoixeia apo8ikeftikan se neo arxeio me onoma: ordereddata.csv\n\n");
 
        printf("Patiste enter oste na ta3inomi8oun me vasi ton Insertion Sort.\n");
         getchar();
         start = clock();
          printf("Clock ticks at starting time: %ld\n", start);
-        insertionSort(d, n);
+        insertionSort(d2, n2);
          end = clock();
-        printArray(d, n);
+        printArray(d2, n2);
         printf("\nTa stoixeia ta3inomithikan me af3ousa seira 8ermokrasias me vasi ton Insertion Sort.\n");
         printf("Clock ticks at end time: %ld\n", end);
        printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
@@ -220,3 +223,4 @@ int main()
 
     return 0;
 }
+
