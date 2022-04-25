@@ -167,15 +167,35 @@ void createCSV2(data2 data[],int s){
 	int i;
     fpt = fopen("new.csv", "w+");
     fprintf(fpt,"Date,       PO4Um,       T_degC,      SiO3uM,      NO2uM,      NO3uM,      Salnty,       O2ml_L\n");
+    
     for (i=2; i<s; i++)
     {
-
+		
         fprintf(fpt,"%ld,  %f,   %f,   %f,   %f,   %f,   %f,   %f\n",data[i].date,  data[i].T_degC, (data[i].PO4uM),data[i].SiO3uM,data[i].NO2uM, data[i].NO3uM,data[i].Salnty, data[i].O2ml_L);
     }
 
     fclose(fpt);
  }
 
+void keep_number(data2 data[], char str[]){
+	
+	int i=0;
+    int j = 0;
+	
+    for (i=2; str[i] ; i++)
+    {
+        
+        if (str[i] >= '0' && str[i] <= '9')
+        {
+            str[j] = str[i];
+            j++;
+        }
+    }
+
+    str[i] = '\0';
+
+    
+}
 
 int binarySearch(data data[], int Left, int Right, char W){
 
