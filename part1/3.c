@@ -116,7 +116,7 @@ void openCSV2(data2 data[]){
             while (value) {
                     
                 if (column == 0) {
-                        strcpy(data[r].date, value);
+                    data[r].T_degC = atol(value);
                 }
            
 
@@ -166,7 +166,7 @@ void createCSV2(data2 data[],int s){
     for (i=2; i<s; i++)
     {
 		
-        fprintf(fpt,"%ld,  %f,   %f,   %f,   %f,   %f,   %f,   %f\n",data[i].date,  data[i].T_degC, (data[i].PO4uM),data[i].SiO3uM,data[i].NO2uM, data[i].NO3uM,data[i].Salnty, data[i].O2ml_L);
+        fprintf(fpt,"%s,  %f,   %f,   %f,   %f,   %f,   %f,   %f\n",data[i].date,  data[i].T_degC, data[i].PO4uM,data[i].SiO3uM,data[i].NO2uM, data[i].NO3uM,data[i].Salnty, data[i].O2ml_L);
     }
 
     fclose(fpt);
