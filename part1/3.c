@@ -116,7 +116,7 @@ void openCSV2(data2 data[]){
             while (value) {
                     
                 if (column == 0) {
-                    data[r].T_degC = atol(value);
+                    data[r].date = atol(value);
                 }
            
 
