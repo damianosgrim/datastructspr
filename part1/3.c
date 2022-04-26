@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <time.h>
 
 //creat a struct in order to store csv's data
 typedef struct data {
@@ -47,25 +48,19 @@ void openCSV(data data[]){
                 r++;
 
 
-                // To avoid printing of column
-                // names in file can be changed
-                // according to need
                 if (row == 1)
                     continue;
 
-                // Splitting the data
                 char* value = strtok(buffer, ", ");
 
                 while (value) {
-                    // Column 1
+            
                     if (column == 0) {
                         strcpy(data[r].date, value);
                     }
 
-                    // Column 2
-                    if (column == 1) {data[r].T_degC = atof(value);}
-
-                // Column 3
+                if (column == 1) {data[r].T_degC = atof(value);}
+                    
                 if (column == 2) {data[r].PO4uM = atof(value);}
 
                 if (column == 3) {data[r].SiO3uM = atof(value);}
@@ -126,12 +121,12 @@ void openCSV2(data2 data[]){
            
 
                 if (column == 1) {
-                    data[r].T_degC = atol(value);
+                    data[r].T_degC = atof(value);
                 }
 
 
                 if (column == 2) {
-                  data[r].PO4uM= atol(value);  //we save the phosphate as long integers
+                  data[r].PO4uM= atof(value);  //we save the phosphate as long integers
                 }
                 if (column == 3) {
                     data[r].SiO3uM = atof(value);
