@@ -16,8 +16,6 @@ float O2ml_L
 } data;
 
 void openCSV(data data[]){
-    // Substitute the full file path
-    // for the string file_path
         FILE* fp = fopen("ocean.csv", "r");
 
     if (!fp)
@@ -93,7 +91,7 @@ void createCSV2(data data[],int s){
  }
 
 
-
+//function to remove th "/" from the dates
 void removeChar(char* s, char c)
 {
 
@@ -104,6 +102,7 @@ void removeChar(char* s, char c)
 
     s[j] = '\0';
 }
+//function to swap the date as y/m/d to be in ascending order
 void swapdate (char* str)
 {
     char temp;
@@ -130,7 +129,7 @@ void swapdate (char* str)
 }
 
 
-
+//function for binary serach
 int binarySearch(data data[], int left, int right, long int w){
 
     while (left <= right) {
@@ -151,15 +150,12 @@ int binarySearch(data data[], int left, int right, long int w){
 
 
 
-
 int main() {
 
-  data d[1406];
+     data d[1406];
  // data data[1500];
 
-  openCSV(d); //call the function that read the csv file
-
-
+    openCSV(d); //call the function that read the csv file
 
     int s=sizeof(d)/sizeof(d[0]); //used to find right limit, binary search
 
@@ -170,11 +166,11 @@ int main() {
     char h; //variable to save user's choice
     int date;
 
-  printf("Enter the date: (mm/dd/yyyy) \n"); //ask for a date
-  scanf("%s", &dat);
-  removeChar(dat,'/');
-  swapdate(dat);
-  date = atol(dat);
+     printf("Enter the date: (mm/dd/yyyy) \n"); //ask for a date
+     scanf("%s", &dat);
+     removeChar(dat,'/');
+     swapdate(dat);
+     date = atol(dat);
 
  //printf("the date you entered %ld\n", date);
 
@@ -183,9 +179,16 @@ int main() {
   printf(" Type t for Temperature \n Type p for Phosphate \n Type b for both Temperature and Phosphate \n ");
   scanf("%s", &h);
 
+   clock_t start, end;
+    //start the clock
+   start = clock();
+
+   printf("\nClock at starting time: %ld\n", start);
+
  int result = binarySearch(d, 0 , s-1, date);
 
-
+    //stop the clock
+    end = clock();
   switch(h) //cases for every choice
     {
         case 't': //only temperature
@@ -219,6 +222,9 @@ int main() {
             printf("Error! This is not a choice!\n");//In case user type wrong letter
     }
 
+        printf("\nClock ticks at end time: %ld\n", end);
+        printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
+        printf("The duration in seconds since the program was launched: %fl\n\n", (double)(end-start)/CLOCKS_PER_SEC);
 
 
   return 0;
