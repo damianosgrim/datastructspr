@@ -149,6 +149,36 @@ int binarySearch(data data[], int left, int right, long int w){
 }
 
 
+void swap(int *a, int *b) {
+  int t = *a;
+  *a = *b;
+  *b = t;
+}
+
+//Πρεπει να ταξινομηθει με βαση τις ημερομηνιες
+void insertionSort(data arr[], int n)
+{
+    int i,  j;
+    long int key;
+    for (i = 1; i < n; i++) {
+        key = arr[i].date;
+        j = i - 1;
+
+        while (j >= 0 && arr[j].date > key) {
+            arr[j + 1].date= arr[j].date;
+            swap(&arr[j + 1].T_degC, &arr[j].T_degC);
+            swap(&arr[j + 1].PO4uM, &arr[j].PO4uM);
+            swap(&arr[j + 1].SiO3uM, &arr[j].SiO3uM);
+            swap(&arr[j + 1].NO2uM, &arr[j].NO2uM);
+            swap(&arr[j + 1].NO3uM, &arr[j].NO3uM);
+            swap(&arr[j + 1].Salnty, &arr[j].Salnty);
+            swap(&arr[j + 1].O2ml_L, &arr[j].O2ml_L);
+            j = j - 1;
+        }
+        arr[j + 1].date = key;
+    }
+}
+
 
 int main() {
 
@@ -159,8 +189,9 @@ int main() {
 
     int s=sizeof(d)/sizeof(d[0]); //used to find right limit, binary search
 
-      //createCSV2(d,s);
-
+  //ταξινομηση struct
+  insertionSort(d,s);
+  createCSV2(d,s);
 
     char dat[10]; //date
     char h; //variable to save user's choice
@@ -195,7 +226,7 @@ int main() {
 
 	            //binary search for temp
 	             if (result == -1) {printf("No data found\n");}
-	            else {printf("Temperature found with binary search: %f \n", d[result].T_degC);}
+	            else {printf("Temperature found with binary search: %.2f \n", d[result].T_degC);}
 
           break;
 
@@ -203,7 +234,7 @@ int main() {
 
 	            //binary search for temp
 	            if (result == -1) {printf("No data found\n");}
-	            else {printf("The value of the phosphate found with binary search: %f \n", d[result].PO4uM);}
+	            else {printf("The value of the phosphate found with binary search: %.2f \n", d[result].PO4uM);}
 
             break;
 
@@ -211,8 +242,8 @@ int main() {
 
 	            //binary search for both
 	            if (result == -1) {printf("No data found\n");}
-	            else{printf("The value of the phosphate found with binary search: %f ", d[result].PO4uM);
-                         printf("and the temperature was: %f \n", d[result].T_degC);}
+	            else{printf("The value of the phosphate found with binary search: %.2f ", d[result].PO4uM);
+                         printf("and the temperature was: %.2f \n", d[result].T_degC);}
 
 
             break;
@@ -229,3 +260,4 @@ int main() {
 
   return 0;
 }
+
