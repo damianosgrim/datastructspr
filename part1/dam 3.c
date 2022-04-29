@@ -183,7 +183,6 @@ void insertionSort(data arr[], int n)
 int main() {
 
      data d[1406];
- // data data[1500];
 
     openCSV(d); //call the function that read the csv file
 
@@ -203,9 +202,7 @@ int main() {
      swapdate(dat);
      date = atol(dat);
 
- //printf("the date you entered %ld\n", date);
-
-
+ 
   printf("Select what do you want to search for:\n"); //ask for temp, phosp or both
   printf(" Type t for Temperature \n Type p for Phosphate \n Type b for both Temperature and Phosphate \n ");
   scanf("%s", &h);
