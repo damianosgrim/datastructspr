@@ -247,8 +247,8 @@ int main() {
 
 	printf("\nClock at starting time: %ld\n", start);
 
-	int result_b = binarySearch(d, 0 , s-1, date);
-	int result_i = interpolationSearch(d, 0, s-1, date);
+	int result_b = binarySearch(d, 0 , s, date);
+	int result_i = interpolationSearch(d, 0, s, date);
 
 
 	//stop the clock
