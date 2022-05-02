@@ -76,23 +76,6 @@ void openCSV(data data[]){
     }
 }
 
-//create a new csv file to save date as long int
-void createCSV2(data data[],int s){
-     FILE *fpt;
-
-	int i;
-
-	fpt = fopen("new.csv", "w+");
-    fprintf(fpt,"Date,       PO4Um,       T_degC,      SiO3uM,      NO2uM,      NO3uM,      Salnty,       O2ml_L\n");
-
-    for (i=2; i<s; i++)
-    {
-
-        fprintf(fpt,"%ld,  %f,   %f,   %f,   %f,   %f,   %f,   %f\n",data[i].date,  data[i].T_degC, data[i].PO4uM,data[i].SiO3uM,data[i].NO2uM, data[i].NO3uM,data[i].Salnty, data[i].O2ml_L);
-    }
-
-    fclose(fpt);
- }
 
 
 //function to remove th "/" from the dates
@@ -249,7 +232,7 @@ int main() {
 
 		//shorting struct
 		insertionSort(d,s);
-		createCSV2(d,s);
+		
 
 		char dat[10]; //date
 		char h; //variable to save user's choice
