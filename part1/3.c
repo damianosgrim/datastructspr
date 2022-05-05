@@ -161,9 +161,7 @@ int interpolationSearch(data data[], int l, int h, long int w){
 
     if (l <= h && w >= data[l].date && data[h].date){
 
-       pos = l + (((double)(h - l) / (data[h].date - data[l].date))
-                 * (w - data[l].date));
-
+       pos = l + (((double)(h - l) / (data[h].date - data[l].date))* (w - data[l].date));
         //target found
         if (data[pos].date == w)
             return pos;
@@ -216,7 +214,7 @@ void insertionSort(data arr[], int n)
 int main() {
 
 
-		data d[1406];
+		data d[2000];
 
 		openCSV(d); //call the function that read the csv file
 
@@ -245,25 +243,39 @@ int main() {
 	   //start the clock
 	   start = clock();
 
-	printf("\nClock at starting time: %ld\n", start);
+	printf("\nClock in binary search at starting time : %ld\n", start);
 
 	int result_b = binarySearch(d, 0 , s, date);
-	int result_i = interpolationSearch(d, 0, s, date);
-
-
 	//stop the clock
 	end = clock();
+	printf("\nClock ticks in binary search at end time : %ld\n", end);
+    printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
+    printf("The duration in seconds since binary search was launched: %fl\n\n", (double)(end-start)/CLOCKS_PER_SEC);
+
+
+
+     start = clock();
+
+	printf("\nClock in interpolation search at starting time: %ld\n", start);
+
+	int result_i = interpolationSearch(d, 0, s, date);
+	//stop the clock
+    end = clock();
+    printf("\nClock ticks in interpolation search at end time : %ld\n", end);
+    printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
+    printf("The duration in seconds since interpolation search was launched: %fl\n\n", (double)(end-start)/CLOCKS_PER_SEC);
+
 
 		switch(h) //cases for every choice
 	    {
 	        case 't': //only temperature
 
 		            //binary search for temp
-		            if (result_b == -1) {printf("No data found\n");}
+		            if (result_b == -1) {printf("No data found with binary search\n");}
 		            	else {printf("Temperature, found with binary search, is: %.2f \n", d[result_b].T_degC);}
 
                     //interpolation search for temp
-                    if (result_i == -1) {printf("No data found\n");}
+                    if (result_i == -1) {printf("No data found wuth interpolation search\n");}
 		            	else {printf("Temperature, found with interpolation search, is: %.2f \n", d[result_i].T_degC);}
 
 	        break;
@@ -271,12 +283,13 @@ int main() {
 
 	        case 'p': //only phosphate
 
+
 		            //binary search for phosp
-		            if (result_b == -1) {printf("No data found\n");}
+		            if (result_b == -1) {printf("No data found with binary search\n");}
 		            	else {printf("The value of phosphate, found with binary search, is: %.2f \n", d[result_b].PO4uM);}
 
                     //interpolation search for phosp
-                    if (result_i == -1) {printf("No data found\n");}
+                    if (result_i == -1) {printf("No data found with interpolation search\n");}
 		            	else {printf("The value of phosphate, found with interpolation search, is: %.2f \n", d[result_i].PO4uM);}
 	        break;
 
@@ -284,14 +297,14 @@ int main() {
 	        case 'b': //both temperature and phosphate
 
 		            //binary search for both
-		            if (result_b == -1) {printf("No data found\n");}
+		            if (result_b == -1) {printf("No data found with binary search\n");}
 		            	else{
 							printf("The value of phosphate, found with binary search, is: %.2f ", d[result_b].PO4uM);
 		                	printf("and temperature is: %.2f \n", d[result_b].T_degC);
 						}
 
                     //interpolation search for both
-                    if (result_i == -1) {printf("No data found\n");}
+                    if (result_i == -1) {printf("No data found with interpolation search\n");}
 		            	else{
 							printf("The value of phosphate, found with interpolation search, is: %.2f ", d[result_i].PO4uM);
 		                	printf("and temperature is: %.2f \n", d[result_i].T_degC);
@@ -303,9 +316,8 @@ int main() {
 	            printf("Error! This is not a choice!\n");//In case user type wrong letter
 	    }
 
-        printf("\nClock ticks at end time: %ld\n", end);
-        printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
-        printf("The duration in seconds since the program was launched: %fl\n\n", (double)(end-start)/CLOCKS_PER_SEC);
+
+
 
 
   return 0;
