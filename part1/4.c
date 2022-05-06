@@ -90,6 +90,21 @@ void removeChar(char* s, char c)
     s[j] = '\0';
 }
 
+void createCSV2(data data[],int s){
+     FILE *fpt;
+	int i;
+    fpt = fopen("n2.csv", "w+");
+    fprintf(fpt,"Date,       PO4Um,       T_degC,      SiO3uM,      NO2uM,      NO3uM,      Salnty,       O2ml_L\n");
+
+    for (i=2; i<s; i++)
+    {
+
+        fprintf(fpt,"%ld,  %f,   %f,   %f,   %f,   %f,   %f,   %f\n",data[i].date,  data[i].T_degC, data[i].PO4uM,data[i].SiO3uM,data[i].NO2uM, data[i].NO3uM,data[i].Salnty, data[i].O2ml_L);
+    }
+
+    fclose(fpt);
+ }
+
 
 //function to swap the date as YYYY/MM/DD to be in ascending order
 void swapdate (char* str)
@@ -162,9 +177,11 @@ int linearSearch (data data[], int left, int right, int date) {
     return -1;
 
 }
-int BIS(data data[], int left, int right, int date)  {
 
+int BIS(data data[], int date,int s)  {
 
+    int left=0;
+    int right=s;
     int size = right - left+1;
 
     int next = (int) (size * ((date - data[left].date)/(data[right].date - data[left].date))) + 1;
@@ -214,17 +231,11 @@ int BIS(data data[], int left, int right, int date)  {
 
 
     }
-
-    if (date = data[next].date)
-
-            return next;
-        else return -1;
-
 }
 int main() {
 
 
-		data d[1406];
+		data d[1405];
 
 		openCSV(d); //call the function that read the csv file
 
@@ -232,7 +243,7 @@ int main() {
 
 		//shorting struct
 		insertionSort(d,s);
-		
+
 
 		char dat[10]; //date
 		char h; //variable to save user's choice
@@ -243,6 +254,7 @@ int main() {
 	    removeChar(dat,'/'); //removing / from the date
 	    swapdate(dat);	//change date format from MM/DD/YYYY to YYYY/MM/DD
 	    date = atol(dat);  //make date a long int
+	    createCSV2(d,s);
 
 
 		printf("Select what do you want to search for:\n"); //ask for temperature, phosphate or both
@@ -255,7 +267,7 @@ int main() {
 
 	printf("\nClock at starting time: %ld\n", start);
 
-	int result = BIS(d, 0 , s, date);
+	int result = BIS(d, date,s);
 
 	//stop the clock
 	end = clock();
