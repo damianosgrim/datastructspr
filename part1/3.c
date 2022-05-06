@@ -214,7 +214,7 @@ void insertionSort(data arr[], int n)
 int main() {
 
 
-		data d[2000];
+		data d[1407];
 
 		openCSV(d); //call the function that read the csv file
 
@@ -258,7 +258,7 @@ int main() {
 
 	printf("\nClock in interpolation search at starting time: %ld\n", start);
 
-	int result_i = interpolationSearch(d, 0, s, date);
+	int result_i = interpolationSearch(d, 0, s-1, date);
 	//stop the clock
     end = clock();
     printf("\nClock ticks in interpolation search at end time : %ld\n", end);
