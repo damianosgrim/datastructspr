@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
+#include <math.h>
 typedef struct Data {
 char date[10];
 float T_degC;
@@ -102,7 +104,7 @@ void openCSV1(data data[]){
 
 //this is the function to open the file for countingsort
 void openCSV2(data2 data[]){
-    FILE* fp = fopen("countingsort.csv", "r");
+    FILE* fp = fopen("ocean.csv", "r");
 
     if (!fp)
         printf("Can't open file\n");
@@ -143,7 +145,10 @@ void openCSV2(data2 data[]){
 
 
                 if (column == 2) {
-                  data[r].PO4uM= atol(value);  //we save the phosphate as long integers
+                  double i=atof(value);
+                  double j= i*100;
+                  data[r].PO4uM=j;
+
                 }
                 if (column == 3) {
                     data[r].SiO3uM = atof(value);
@@ -190,22 +195,6 @@ void openCSV2(data2 data[]){
  }
 
 
-
-//this is the function to create the file for countingsort in which we have round the numbers of phosphate
-void createCSV2(data data[],int s){
-     FILE *fpt;
-
-    fpt = fopen("countingsort.csv", "w+");
-    fprintf(fpt,"Date,       PO4Um,       T_degC,      SiO3uM,      NO2uM,      NO3uM,      Salnty,       O2ml_L\n");
-    for (int i=2; i<s; i++)
-    {
-
-        fprintf(fpt,"%s,  %f,   %f,   %f,   %f,   %f,   %f,   %f\n",data[i].date,  data[i].T_degC,round(data[i].PO4uM),data[i].SiO3uM,data[i].NO2uM, data[i].NO3uM,data[i].Salnty, data[i].O2ml_L);
-    }
-
-    fclose(fpt);
- }
-
 //this is the function to create the output file for counting sort
  void createCSV3(data2 data[],int s){
      FILE *fpt;
@@ -214,8 +203,8 @@ void createCSV2(data data[],int s){
     fprintf(fpt,"Date,       PO4Um,       T_degC,      SiO3uM,      NO2uM,      NO3uM,      Salnty,       O2ml_L\n");
     for (int i=2; i<s; i++)
     {
-
-        fprintf(fpt,"%s,  %ld,   %f,   %f,   %f,   %f,   %f,   %f\n",data[i].date, data[i].PO4uM, data[i].T_degC,data[i].SiO3uM,data[i].NO2uM, data[i].NO3uM,data[i].Salnty, data[i].O2ml_L);
+        double phosphate = (double)(data[i].PO4uM)/(double)100;
+        fprintf(fpt,"%s,  %.2f,   %f,   %f,   %f,   %f,   %f,   %f\n",data[i].date,phosphate, data[i].T_degC,data[i].SiO3uM,data[i].NO2uM, data[i].NO3uM,data[i].Salnty, data[i].O2ml_L);
     }
 
     fclose(fpt);
@@ -287,7 +276,7 @@ void createCSV2(data data[],int s){
   void printArray1(data data[], int s)
 {
     for(int i=2; i<s; i++)
-    { printf("Date:%s  PO4uM:%f  Temp:%f  SiO3uM:%f  NO2uM:%f  NO3uM:%f  Salnty:%f  O2ml_L:%f\n", data[i].date, data[i].PO4uM, data[i].T_degC, data[i].SiO3uM, data[i].NO2uM, data[i].NO3uM, data[i].Salnty, data[i].O2ml_L);
+    { printf("Date:%s  PO4uM:%.2f  Temp:%f  SiO3uM:%f  NO2uM:%f  NO3uM:%f  Salnty:%f  O2ml_L:%f\n", data[i].date, data[i].PO4uM, data[i].T_degC, data[i].SiO3uM, data[i].NO2uM, data[i].NO3uM, data[i].Salnty, data[i].O2ml_L);
 }
 }
 
@@ -296,6 +285,7 @@ void createCSV2(data data[],int s){
 //function for countingsort
 void countingSort(data2 array[], int s) {
   int output[1406];
+
 
   // Find the largest element of the array
   int max = array[0].PO4uM;
@@ -306,7 +296,7 @@ void countingSort(data2 array[], int s) {
   }
 
 
-  int count[5];
+  int count[333];
 
   for (int i = 0; i <= max; ++i) {
         count[i] = 0;
@@ -326,18 +316,23 @@ void countingSort(data2 array[], int s) {
   for (int i = s - 1; i >= 0; i--) {
     output[count[array[i].PO4uM] - 1] = array[i].PO4uM;
     count[array[i].PO4uM]--;
+
+
   }
 
 
   for (int i = 0; i < s; i++) {
     array[i].PO4uM = output[i];
+
   }
 }
 //function to print the results of countingsort
 void printArray2(data2 data[], int s)
 {
     for(int i=2; i<s; i++)
-    { printf("Date:%s  PO4uM:%ld Temp:%f  SiO3uM:%f  NO2uM:%f  NO3uM:%f  Salnty:%f  O2ml_L:%f\n", data[i].date, data[i].PO4uM, data[i].T_degC, data[i].SiO3uM, data[i].NO2uM, data[i].NO3uM, data[i].Salnty, data[i].O2ml_L);
+    {
+        double phosphate = (double)(data[i].PO4uM)/(double)100;
+         printf("Date:%s  PO4uM:%.2f Temp:%f  SiO3uM:%f  NO2uM:%f  NO3uM:%f  Salnty:%f  O2ml_L:%f\n", data[i].date,phosphate, data[i].T_degC, data[i].SiO3uM, data[i].NO2uM, data[i].NO3uM, data[i].Salnty, data[i].O2ml_L);
 }
 }
 
@@ -347,7 +342,7 @@ void printArray2(data2 data[], int s)
         data d2[1406];
 
         openCSV1(d1);
-        openCSV1(d2);
+        openCSV2(d2);
 
         int s = sizeof(d1) / sizeof(d1[0]);
 
@@ -373,18 +368,20 @@ void printArray2(data2 data[], int s)
         printf("CLOCKS_PER_SEC: %ld\n", CLOCKS_PER_SEC);
         printf("The duration in seconds since the program was launched: %fl\n\n", (double)(end-start)/CLOCKS_PER_SEC);
 
-        createCSV1(d1,s); //save the output in a new CSV file
+       createCSV1(d1,s); //save the output in a new CSV file
 
 
         //from here we start the code for countingsort
         printf("Press enter to start sorting using COUNTING SORT.\n\n");
         getchar();
 
-        createCSV2(d2,s); //we create a new file in which the phosphate is rounded
+
 
         data2 d3[1406];
 
+
         openCSV2(d3);//open the new file
+
 
         //start the clock
         start = clock();
