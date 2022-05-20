@@ -1,4 +1,4 @@
-##include <stdio.h>
+#include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -436,9 +436,10 @@ else{
                     break;
                     
                 case '4':
-                	printf("Type the date you want to remove:\n");
+                	printf("Type the date you want to remove (YYYYMMDD):\n");
                 	scanf("%ld", &date);
                 	struct Node* deleteNode(struct Node* root, int date);
+			printInorder(root);
                     break;
                     
                 case '5':
