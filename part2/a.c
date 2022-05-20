@@ -320,7 +320,7 @@ do{
 
 printf("\n\ndo you want to run the programm? 1.yes 2.no (choose a number): \n");
 scanf("%d", &choice);
-if (choice==3){return 0;}
+if (choice==2){return 0;}
 
 else{
         answer=1;
