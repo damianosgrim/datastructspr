@@ -116,7 +116,34 @@ void swapdate (char* str)
 	str[n - 1] = temp;
 
 }
+void swap(int *a, int *b) {
+  int t = *a;
+  *a = *b;
+  *b = t;
+}
+//shorting by date
+void insertionSort(data arr[], int n)
+{
+    int i,  j;
+    long int key;
+    for (i = 1; i < n; i++) {
+        key = arr[i].date;
+        j = i - 1;
 
+        while (j >= 0 && arr[j].date > key) {
+            arr[j + 1].date= arr[j].date;
+            swap(&arr[j + 1].T_degC, &arr[j].T_degC);
+            swap(&arr[j + 1].PO4uM, &arr[j].PO4uM);
+            swap(&arr[j + 1].SiO3uM, &arr[j].SiO3uM);
+            swap(&arr[j + 1].NO2uM, &arr[j].NO2uM);
+            swap(&arr[j + 1].NO3uM, &arr[j].NO3uM);
+            swap(&arr[j + 1].Salnty, &arr[j].Salnty);
+            swap(&arr[j + 1].O2ml_L, &arr[j].O2ml_L);
+            j = j - 1;
+        }
+        arr[j + 1].date = key;
+    }
+}
 
 // An AVL tree node
 struct Node
@@ -255,17 +282,20 @@ struct Node* insert(struct Node* node, int key)
     return node;
 }
 
-// A utility function to print preorder traversal
-// of the tree.
-// The function also prints height of every node
-void preOrder(struct Node *root)
+
+void printInorder(struct Node *root)
 {
-    if(root != NULL)
-    {
-        printf("%d ", root->key);
-        preOrder(root->left);
-        preOrder(root->right);
-    }
+    if (root == NULL)
+        return;
+
+    /* first recur on left child */
+    printInorder(root->left);
+
+    /* then print the data of node */
+    printf("%d ", root->key);
+
+    /* now recur on right child */
+    printInorder(root->right);
 }
 
 /* Driver program to test above function*/
@@ -276,16 +306,47 @@ int main()
     int s=sizeof(d)/sizeof(d[0]); //used to find right limit, binary search
 
   struct Node *root = NULL;
+  insertionSort(d,s);
 
   /* Constructing tree given in the above figure */
   for (int i=0; i<1406; i++) {
-    root = insert(root, d[i].date );
+    root = insert(root, d[i].date);
   }
 
+int answer=0;
+int choice;
+char ans= "y";
+do{
 
-  printf("Preorder traversal of the constructed AVL"
-         " tree is \n");
-  preOrder(root);
+printf("\n\ndo you want to run the programm? 1.yes 2.no (choose a number): \n");
+scanf("%d", &choice);
+if (choice==3){return 0;}
+
+else{
+        answer=1;
+        char number;
+         printf("choose what you want to happen with the AVL:\n 1.Inorder traversal \n 2.search a temperature\n 3.modify a temperature\n 4.delete a date/\n 5.exit\n (choose a number): \n");
+        scanf("%s", &number);
+            switch(number){
+                case '1':
+                      printf("Inorder traversal of the constructed AVL tree is \n");
+                      printInorder(root);
+                       break;
+
+                case '2':
+                     break;
+                case '3':
+                    break;
+                case '4':
+                    break;
+                case '5':
+                     return 0;
+            }
+}
+}while(answer!=0);
+
+
+
 
   return 0;
 }
