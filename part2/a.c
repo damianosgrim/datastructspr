@@ -1,4 +1,4 @@
-#include <stdio.h>
+##include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,7 +17,7 @@ float Salnty;
 float O2ml_L;
 } data;
 
-//Συνάρτηση που ανοίγει το csv και τα αποθηκεύει σε Stucts
+//ÓõíÜñôçóç ðïõ áíïßãåé ôï csv êáé ôá áðïèçêåýåé óå Stucts
 void openCSV(data data[]){
     FILE* fp = fopen("ocean.csv", "r");
 
@@ -298,6 +298,100 @@ void printInorder(struct Node *root)
     printInorder(root->right);
 }
 
+
+// Recursive function to delete a node with given key
+// from subtree with given root. It returns root of
+// the modified subtree.
+struct Node* deleteNode(struct Node* root, int key)
+{
+    // STEP 1: PERFORM STANDARD BST DELETE
+    if (root == NULL)
+        return root;
+ 
+    // If the key to be deleted is smaller than the
+    // root's key, then it lies in left subtree
+    if ( key < root->key )
+        root->left = deleteNode(root->left, key);
+ 
+    // If the key to be deleted is greater than the
+    // root's key, then it lies in right subtree
+    else if( key > root->key )
+        root->right = deleteNode(root->right, key);
+ 
+    // if key is same as root's key, then This is
+    // the node to be deleted
+    else
+    {
+        // node with only one child or no child
+        if( (root->left == NULL) || (root->right == NULL) )
+        {
+            struct Node *temp = root->left ? root->left :
+                                             root->right;
+ 
+            // No child case
+            if (temp == NULL)
+            {
+                temp = root;
+                root = NULL;
+            }
+            else // One child case
+             *root = *temp; // Copy the contents of
+                            // the non-empty child
+            free(temp);
+        }
+        else
+        {
+            // node with two children: Get the inorder
+            // successor (smallest in the right subtree)
+            struct Node* temp = minValueNode(root->right);
+ 
+            // Copy the inorder successor's data to this node
+            root->key = temp->key;
+ 
+            // Delete the inorder successor
+            root->right = deleteNode(root->right, temp->key);
+        }
+    }
+ 
+    // If the tree had only one node then return
+    if (root == NULL)
+      return root;
+ 
+    // STEP 2: UPDATE HEIGHT OF THE CURRENT NODE
+    root->height = 1 + max(height(root->left),
+                           height(root->right));
+ 
+    // STEP 3: GET THE BALANCE FACTOR OF THIS NODE (to
+    // check whether this node became unbalanced)
+    int balance = getBalance(root);
+ 
+    // If this node becomes unbalanced, then there are 4 cases
+ 
+    // Left Left Case
+    if (balance > 1 && getBalance(root->left) >= 0)
+        return rightRotate(root);
+ 
+    // Left Right Case
+    if (balance > 1 && getBalance(root->left) < 0)
+    {
+        root->left =  leftRotate(root->left);
+        return rightRotate(root);
+    }
+ 
+    // Right Right Case
+    if (balance < -1 && getBalance(root->right) <= 0)
+        return leftRotate(root);
+ 
+    // Right Left Case
+    if (balance < -1 && getBalance(root->right) > 0)
+    {
+        root->right = rightRotate(root->right);
+        return leftRotate(root);
+    }
+ 
+    return root;
+}
+
 /* Driver program to test above function*/
 int main()
 {
@@ -315,17 +409,19 @@ int main()
 
 int answer=0;
 int choice;
+long int date;
+
 
 do{
 
-printf("\n\ndo you want to run the programm? 1.yes 2.no (choose a number): \n");
+printf("\n\nDo you want to run the programm? 1.Yes 2.No (Type a number): \n");
 scanf("%d", &choice);
 if (choice==2){return 0;}
 
 else{
         answer=1;
         char number;
-         printf("choose what you want to happen with the AVL:\n 1.Inorder traversal \n 2.search a temperature\n 3.modify a temperature\n 4.delete a date/\n 5.exit\n (choose a number): \n");
+         printf("Type what do you want to happen with the AVL:\n 1.Inorder traversal \n 2.Search a temperature\n 3.Modify a temperature\n 4.Delete a date/\n 5.exit\n (choose a number): \n");
         scanf("%s", &number);
             switch(number){
                 case '1':
@@ -335,10 +431,16 @@ else{
 
                 case '2':
                      break;
+                     
                 case '3':
                     break;
+                    
                 case '4':
+                	printf("Type the date you want to remove:\n");
+                	scanf("%ld", &date);
+                	struct Node* deleteNode(struct Node* root, int date);
                     break;
+                    
                 case '5':
                      return 0;
             }
