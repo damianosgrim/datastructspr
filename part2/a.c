@@ -315,7 +315,7 @@ int main()
 
 int answer=0;
 int choice;
-char ans= "y";
+
 do{
 
 printf("\n\ndo you want to run the programm? 1.yes 2.no (choose a number): \n");
