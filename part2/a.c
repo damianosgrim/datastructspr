@@ -1,6 +1,7 @@
-#include <stdio.h>
+
 #include <conio.h>
 #include <stdlib.h>
+#include <stdbool.h>  
 #include <string.h>
 #include <math.h>
 #include <time.h>
@@ -17,7 +18,7 @@ float Salnty;
 float O2ml_L;
 } data;
 
-//ÓõíÜñôçóç ðïõ áíïßãåé ôï csv êáé ôá áðïèçêåýåé óå Stucts
+//OoiUnococ ?io aii?aae oi csv eae oa a?ieceayae oa Stucts
 void openCSV(data data[]){
     FILE* fp = fopen("ocean.csv", "r");
 
@@ -147,7 +148,7 @@ void insertionSort(data arr[], int n)
 
 // An AVL tree node
 struct Node
-{
+{   data d;
     int key;
     struct Node *left;
     struct Node *right;
@@ -173,11 +174,11 @@ int max(int a, int b)
 
 /* Helper function that allocates a new node with the given key and
     NULL left and right pointers. */
-struct Node* newNode(int key)
+struct Node* newNode(int key, data d)
 {
     struct Node* node = (struct Node*)
                         malloc(sizeof(struct Node));
-    node->key   = key;
+    node->d   = d;
     node->left   = NULL;
     node->right  = NULL;
     node->height = 0;  // new node is initially added at leaf
@@ -198,7 +199,7 @@ struct Node *rightRotate(struct Node *y)
     // Update heights
     y->height = height(y);
     x->height = height(x);
-
+    
     // Return new root
     return x;
 }
@@ -232,16 +233,16 @@ int getBalance(struct Node *N)
 
 // Recursive function to insert a key in the subtree rooted
 // with node and returns the new root of the subtree.
-struct Node* insert(struct Node* node, int key)
+struct Node* insert(struct Node* node, int key, data d)
 {
     /* 1.  Perform the normal BST insertion */
     if (node == NULL)
-        return(newNode(key));
+        return(newNode(key, d));
 
     if (key < node->key)
-        node->left  = insert(node->left, key);
+        node->left  = insert(node->left, key, d);
     else if (key > node->key)
-        node->right = insert(node->right, key);
+        node->right = insert(node->right, key, d);
     else // Equal keys are not allowed in BST
         return node;
 
@@ -292,7 +293,7 @@ void printInorder(struct Node *root)
     printInorder(root->left);
 
     /* then print the data of node */
-    printf("%d ", root->key);
+    printf("Date:%d\Temp:%fl  ", root->d.date, root->d.T_degC );
 
     /* now recur on right child */
     printInorder(root->right);
@@ -395,6 +396,7 @@ struct Node* deleteNode(struct Node* root, int key)
     if (balance < -1 && getBalance(root->right) <= 0)
         return leftRotate(root);
 
+
     // Right Left Case
     if (balance < -1 && getBalance(root->right) > 0)
     {
@@ -403,6 +405,27 @@ struct Node* deleteNode(struct Node* root, int key)
     }
 
     return root;
+}
+
+struct Node * searchNode(struct Node* root, int key) {
+	
+	//node not found
+    if(root == NULL) {
+      printf("No data found\n");
+      return NULL;
+    
+    } else if (root-> d.date == key) {
+      return root;
+    } 
+	//node is in the left subtree
+	else {
+      struct Node* x = search(root->left,key);
+      if (x)
+        return x;         //if we find in left subtree, return result
+      
+      //note is in the right subtree
+	  return search(root->right,key);
+    }
 }
 
 /* Driver program to test above function*/
@@ -417,7 +440,7 @@ int main()
 
   /* Constructing tree given in the above figure */
   for (int i=0; i<1406; i++) {
-    root = insert(root, d[i].date);
+    root = insert(root, d[i].date, d[i]);
   }
 
 int answer=0;
@@ -434,7 +457,7 @@ if (choice==2){return 0;}
 else{
         answer=1;
         char number;
-         printf("Type what do you want to happen with the AVL:\n 1.Inorder traversal \n 2.Search a temperature\n 3.Modify a temperature\n 4.Delete a date/\n 5.exit\n (choose a number): \n");
+         printf("Type what do you want to happen with the AVL:\n 1.Inorder traversal \n 2.Search a temperature\n 3.Modify a temperature\n 4.Delete a date\n 5.Åxit\n (choose a number): \n");
         scanf("%s", &number);
             switch(number){
                 case '1':
@@ -443,6 +466,11 @@ else{
                        break;
 
                 case '2':
+                	  printf("Enter a date (YYYYMMDD) to find it's temperature:'");
+                	  scanf("%ld", &date);
+                	  search(root, date);
+                	  printInorder(root);
+                	  
                      break;
 
                 case '3':
@@ -452,7 +480,7 @@ else{
                 	printf("Type the date you want to remove (YYYYMMDD):\n");
                 	scanf("%ld", &date);
                 	deleteNode(root, date);
-			      printInorder(root);
+			        printInorder(root);
                     break;
 
                 case '5':
