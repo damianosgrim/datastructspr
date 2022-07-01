@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
-#include <stdbool.h>  
+#include <stdbool.h>
 #include <string.h>
 #include <math.h>
 #include <time.h>
@@ -199,7 +199,7 @@ struct Node *rightRotate(struct Node *y)
     // Update heights
     y->height = height(y);
     x->height = height(x);
-    
+
     // Return new root
     return x;
 }
@@ -407,26 +407,26 @@ struct Node* deleteNode(struct Node* root, int key)
     return root;
 }
 
-struct Node * searchNode(struct Node* root, int key) {
-	
+/*struct Node * searchNode(struct Node* root, int key) {
+
 	//node not found
     if(root == NULL) {
       printf("No data found\n");
       return NULL;
-    
+
     } else if (root-> d.date == key) {
       return root;
-    } 
+    }
 	//node is in the left subtree
 	else {
-      struct Node* x = search(root->left,key);
+      struct Node* x = searchNode(root->left,key);
       if (x)
         return x;         //if we find in left subtree, return result
-      
+
       //note is in the right subtree
-	  return search(root->right,key);
+	  return searchNode(root->right,key);
     }
-}
+}*/
 
 /* Driver program to test above function*/
 int main()
@@ -466,11 +466,11 @@ else{
                        break;
 
                 case '2':
-                	  printf("Enter a date (YYYYMMDD) to find it's temperature:'");
+                	  /*printf("Enter a date (YYYYMMDD) to find it's temperature:'");
                 	  scanf("%ld", &date);
                 	  search(root, date);
-                	  printInorder(root);
-                	  
+                	  printInorder(root);*/
+
                      break;
 
                 case '3':
