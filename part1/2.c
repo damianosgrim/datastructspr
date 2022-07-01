@@ -200,11 +200,11 @@ void openCSV2(data2 data[]){
      FILE *fpt;
 
     fpt = fopen("outputCountingsort.csv", "w+");
-    fprintf(fpt,"Date,       PO4Um,       T_degC,      SiO3uM,      NO2uM,      NO3uM,      Salnty,       O2ml_L\n");
+    fprintf(fpt," PO4Um\n");
     for (int i=2; i<s; i++)
     {
         double phosphate = (double)(data[i].PO4uM)/(double)100;
-        fprintf(fpt,"%s,  %.2f,   %f,   %f,   %f,   %f,   %f,   %f\n",data[i].date,phosphate, data[i].T_degC,data[i].SiO3uM,data[i].NO2uM, data[i].NO3uM,data[i].Salnty, data[i].O2ml_L);
+        fprintf(fpt," %.2f\n",phosphate);
     }
 
     fclose(fpt);
@@ -332,7 +332,7 @@ void printArray2(data2 data[], int s)
     for(int i=2; i<s; i++)
     {
         double phosphate = (double)(data[i].PO4uM)/(double)100;
-         printf("Date:%s  PO4uM:%.2f Temp:%f  SiO3uM:%f  NO2uM:%f  NO3uM:%f  Salnty:%f  O2ml_L:%f\n", data[i].date,phosphate, data[i].T_degC, data[i].SiO3uM, data[i].NO2uM, data[i].NO3uM, data[i].Salnty, data[i].O2ml_L);
+         printf("PO4uM:%.2f\n", phosphate);
 }
 }
 
@@ -408,3 +408,4 @@ void printArray2(data2 data[], int s)
 
     return 0;
   }
+
